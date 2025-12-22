@@ -3,6 +3,8 @@ import { ArrowUpRight, ArrowDownRight, Users, Zap, Car, Download, Loader2 } from
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
 import TrendChart from './charts/TrendChart';
 import DepartmentChart from './charts/DepartmentChart';
+import ComparisonChart from './charts/ComparisonChart';
+import MonthlyBreakdownChart from './charts/MonthlyBreakdownChart';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
@@ -108,6 +110,11 @@ const Dashboard = () => {
                 <div className="col-span-3">
                     <DepartmentChart />
                 </div>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+                <ComparisonChart />
+                <MonthlyBreakdownChart />
             </div>
         </div>
     );

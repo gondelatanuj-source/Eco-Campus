@@ -185,11 +185,11 @@ const LandingPage = () => {
                             <div className="relative bg-white p-8 rounded-2xl shadow-xl border border-border">
                                 <div className="flex items-center justify-between mb-8 border-b border-border pb-4">
                                     <span className="font-bold text-lg">Emission Trends</span>
-                                    <span className="text-sm text-muted-foreground bg-muted px-2 py-1 rounded">Last 6 Months</span>
+                                    <span className="text-sm text-muted-foreground bg-muted px-2 py-1 rounded">Annual View</span>
                                 </div>
                                 {/* Mock Chart Bars */}
-                                <div className="flex items-end justify-between h-64 gap-4 px-2">
-                                    {[35, 45, 30, 60, 55, 40].map((h, i) => (
+                                <div className="flex items-end justify-between h-64 gap-2 px-2">
+                                    {[35, 45, 30, 60, 55, 40, 50, 65, 55, 70, 60, 75].map((h, i) => (
                                         <div key={i} className="w-full bg-muted/50 rounded-t-lg relative group/bar overflow-hidden">
                                             <div
                                                 className="absolute bottom-0 w-full bg-primary transition-all duration-1000 ease-out group-hover/bar:bg-accent"
@@ -202,8 +202,9 @@ const LandingPage = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <div className="flex justify-between mt-4 text-xs text-muted-foreground uppercase tracking-wider font-medium">
+                                <div className="flex justify-between mt-4 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
                                     <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+                                    <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
                                 </div>
                             </div>
                         </div>
