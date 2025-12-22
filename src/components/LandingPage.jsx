@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Leaf, BarChart3, Users, Zap, Bus, Utensils, Lightbulb } from 'lucide-react';
+import { ArrowRight, Leaf, BarChart3, Users, Zap, Bus, Utensils, Lightbulb, Newspaper, ExternalLink, Clock } from 'lucide-react';
 import { animate, stagger } from 'animejs';
 import GridBackground from './ui/GridBackground';
 import Globe3D from './ui/Globe3D';
@@ -183,28 +183,39 @@ const LandingPage = () => {
                         <div className="relative group">
                             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-2xl blur-2xl transform rotate-3 group-hover:rotate-6 transition-transform"></div>
                             <div className="relative bg-white p-8 rounded-2xl shadow-xl border border-border">
-                                <div className="flex items-center justify-between mb-8 border-b border-border pb-4">
-                                    <span className="font-bold text-lg">Emission Trends</span>
-                                    <span className="text-sm text-muted-foreground bg-muted px-2 py-1 rounded">Annual View</span>
+                                <div className="flex items-center justify-between mb-6 border-b border-border pb-4">
+                                    <div className="flex items-center gap-2">
+                                        <Newspaper className="w-5 h-5 text-primary" />
+                                        <span className="font-bold text-lg">Daily Carbon News</span>
+                                    </div>
+                                    <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">Live Updates</span>
                                 </div>
-                                {/* Mock Chart Bars */}
-                                <div className="flex items-end justify-between h-64 gap-2 px-2">
-                                    {[35, 45, 30, 60, 55, 40, 50, 65, 55, 70, 60, 75].map((h, i) => (
-                                        <div key={i} className="w-full bg-muted/50 rounded-t-lg relative group/bar overflow-hidden">
-                                            <div
-                                                className="absolute bottom-0 w-full bg-primary transition-all duration-1000 ease-out group-hover/bar:bg-accent"
-                                                style={{ height: `${h}%` }}
-                                            >
-                                                <div className="opacity-0 group-hover/bar:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-foreground text-background text-xs py-1 px-2 rounded shadow-lg whitespace-nowrap z-10">
-                                                    {h}% Emissions
+
+                                {/* News Items */}
+                                <div className="space-y-4">
+                                    {[
+                                        { title: "Global CO2 hits record high in 2024", time: "2h ago", source: "EcoWatch" },
+                                        { title: "Campus Solar Initiative Approved", time: "5h ago", source: "CampusNews" },
+                                        { title: "Electric Bus Fleet Expansion", time: "1d ago", source: "CityTransport" },
+                                        { title: "New Recycling Protocols in Effect", time: "2d ago", source: "GreenTeam" }
+                                    ].map((news, i) => (
+                                        <div key={i} className="group p-3 rounded-xl bg-muted/30 hover:bg-muted/80 transition-all border border-transparent hover:border-border cursor-pointer">
+                                            <div className="flex justify-between items-start mb-1">
+                                                <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-1">{news.title}</h3>
+                                                <div className="flex items-center text-[10px] text-muted-foreground whitespace-nowrap ml-2">
+                                                    <Clock className="w-3 h-3 mr-1" />
+                                                    {news.time}
                                                 </div>
+                                            </div>
+                                            <div className="flex items-center justify-between mt-2">
+                                                <span className="text-[10px] font-bold text-accent uppercase tracking-wider">{news.source}</span>
+                                                <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                                             </div>
                                         </div>
                                     ))}
                                 </div>
-                                <div className="flex justify-between mt-4 text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
-                                    <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
-                                    <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+                                <div className="mt-4 pt-4 border-t border-border flex justify-center">
+                                    <button className="text-xs font-semibold text-primary hover:underline">View All News</button>
                                 </div>
                             </div>
                         </div>

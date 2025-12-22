@@ -3,25 +3,20 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 
 const data = [
-    { name: 'Jan', value: 420 },
-    { name: 'Feb', value: 380 },
-    { name: 'Mar', value: 550 },
-    { name: 'Apr', value: 510 },
-    { name: 'May', value: 460 },
-    { name: 'Jun', value: 320 },
-    { name: 'Jul', value: 280 },
-    { name: 'Aug', value: 250 },
-    { name: 'Sep', value: 300 },
-    { name: 'Oct', value: 350 },
-    { name: 'Nov', value: 480 },
-    { name: 'Dec', value: 500 },
+    { name: 'Mon', value: 400 },
+    { name: 'Tue', value: 300 },
+    { name: 'Wed', value: 550 },
+    { name: 'Thu', value: 450 },
+    { name: 'Fri', value: 600 },
+    { name: 'Sat', value: 200 },
+    { name: 'Sun', value: 150 },
 ];
 
 const TrendChart = () => {
     return (
         <Card className="col-span-2">
             <CardHeader>
-                <CardTitle>Annual Carbon Footprint Trend</CardTitle>
+                <CardTitle>Weekly Carbon Footprint Trend</CardTitle>
             </CardHeader>
             <CardContent className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
