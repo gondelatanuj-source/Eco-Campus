@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { Trophy, Medal, ArrowDown, ArrowUp, Building2, GraduationCap, Download, Loader2 } from 'lucide-react';
+import { Trophy, Medal, ArrowDown, ArrowUp, Building2, GraduationCap } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+
 
 const departments = [
     { rank: 1, name: 'Computer Science', score: 85, trend: 'up', change: 12 },
@@ -22,32 +21,9 @@ const students = [
 
 const Leaderboard = () => {
     const leaderboardRef = useRef(null);
-    const [downloading, setDownloading] = useState(false);
 
-    const handleDownload = async () => {
-        if (!leaderboardRef.current) return;
 
-        setDownloading(true);
-        try {
-            const canvas = await html2canvas(leaderboardRef.current, {
-                scale: 2,
-                backgroundColor: '#020817', // Match dark theme background if needed, or white
-                logging: false,
-            });
 
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save('campus-leaderboard.pdf');
-        } catch (error) {
-            console.error("Download failed", error);
-        } finally {
-            setDownloading(false);
-        }
-    };
 
     return (
         <div className="space-y-6" ref={leaderboardRef}>
@@ -55,14 +31,7 @@ const Leaderboard = () => {
                 <h2 className="text-3xl font-bold tracking-tight">Community Leaderboard</h2>
                 <div className="flex items-center gap-4">
                     <span className="text-sm text-muted-foreground hidden md:inline">Last updated: Just now</span>
-                    <button
-                        onClick={handleDownload}
-                        disabled={downloading}
-                        className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors flex items-center gap-2 disabled:opacity-50"
-                    >
-                        {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                        {downloading ? 'Downloading...' : 'Export PDF'}
-                    </button>
+
                 </div>
             </div>
 

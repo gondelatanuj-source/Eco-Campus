@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Link } from 'react-router-dom';
 import { ArrowRight, Leaf, BarChart3, Users, Zap, Bus, Utensils, Lightbulb, Newspaper, ExternalLink, Clock } from 'lucide-react';
 import { animate, stagger } from 'animejs';
@@ -7,6 +8,53 @@ import Globe3D from './ui/Globe3D';
 
 const LandingPage = () => {
     const [carbonCount, setCarbonCount] = useState(1243.5);
+    const [news, setNews] = useState([
+        { title: "Global CO2 hits record high in 2024", time: "2h ago", source: "EcoWatch" },
+        { title: "Campus Solar Initiative Approved", time: "5h ago", source: "CampusNews" },
+        { title: "Electric Bus Fleet Expansion", time: "1d ago", source: "CityTransport" },
+        { title: "New Recycling Protocols in Effect", time: "2d ago", source: "GreenTeam" }
+    ]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchNews = async () => {
+            const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+            if (!apiKey) return;
+
+            setLoading(true);
+            try {
+                const genAI = new GoogleGenerativeAI(apiKey);
+                const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+
+                const prompt = `Generate 4 realistic and diverse news headlines about current environmental topics (carbon footprint, climate change, renewable energy) as if they were real breaking news. Return strict JSON array with NO markdown formatting, just raw JSON. Each object must have: 'title', 'time' (e.g. '2h ago', '5m ago'), 'source' (e.g. 'EcoWatch', 'Reuters'), and 'url' (use placeholder 'https://example.com').`;
+
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                let text = response.text();
+
+                // Clean up markdown code blocks if present
+                text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+
+                const data = JSON.parse(text);
+
+                if (Array.isArray(data) && data.length > 0) {
+                    setNews(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch carbon news from Gemini:", error);
+                // Keep default news on error
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchNews();
+
+        // Auto-refresh every 2 minutes (120,000 ms)
+        const intervalId = setInterval(fetchNews, 120000);
+
+        return () => clearInterval(intervalId);
+    }, []);
 
     useEffect(() => {
         // Hero Text Entrance
@@ -193,26 +241,22 @@ const LandingPage = () => {
 
                                 {/* News Items */}
                                 <div className="space-y-4">
-                                    {[
-                                        { title: "Global CO2 hits record high in 2024", time: "2h ago", source: "EcoWatch" },
-                                        { title: "Campus Solar Initiative Approved", time: "5h ago", source: "CampusNews" },
-                                        { title: "Electric Bus Fleet Expansion", time: "1d ago", source: "CityTransport" },
-                                        { title: "New Recycling Protocols in Effect", time: "2d ago", source: "GreenTeam" }
-                                    ].map((news, i) => (
-                                        <div key={i} className="group p-3 rounded-xl bg-muted/30 hover:bg-muted/80 transition-all border border-transparent hover:border-border cursor-pointer">
+                                    {news.map((item, i) => (
+                                        <div key={i} className="group p-3 rounded-xl bg-muted/30 hover:bg-muted/80 transition-all border border-transparent hover:border-border cursor-pointer" onClick={() => item.url && window.open(item.url, '_blank')}>
                                             <div className="flex justify-between items-start mb-1">
-                                                <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-1">{news.title}</h3>
+                                                <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-1">{item.title}</h3>
                                                 <div className="flex items-center text-[10px] text-muted-foreground whitespace-nowrap ml-2">
                                                     <Clock className="w-3 h-3 mr-1" />
-                                                    {news.time}
+                                                    {item.time}
                                                 </div>
                                             </div>
                                             <div className="flex items-center justify-between mt-2">
-                                                <span className="text-[10px] font-bold text-accent uppercase tracking-wider">{news.source}</span>
+                                                <span className="text-[10px] font-bold text-accent uppercase tracking-wider">{item.source}</span>
                                                 <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                                             </div>
                                         </div>
                                     ))}
+                                    {loading && <div className="text-center text-sm text-muted-foreground">Updating news...</div>}
                                 </div>
                                 <div className="mt-4 pt-4 border-t border-border flex justify-center">
                                     <button className="text-xs font-semibold text-primary hover:underline">View All News</button>

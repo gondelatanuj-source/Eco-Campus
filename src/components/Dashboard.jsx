@@ -1,10 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { ArrowUpRight, ArrowDownRight, Users, Zap, Car, Download, Loader2 } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, Users, Zap, Car } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
 import TrendChart from './charts/TrendChart';
 import DepartmentChart from './charts/DepartmentChart';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+
 
 const MetricCard = ({ title, value, change, trend, icon: Icon }) => (
     <Card>
@@ -27,46 +26,16 @@ const MetricCard = ({ title, value, change, trend, icon: Icon }) => (
 
 const Dashboard = () => {
     const dashboardRef = useRef(null);
-    const [downloading, setDownloading] = useState(false);
 
-    const handleDownload = async () => {
-        if (!dashboardRef.current) return;
 
-        setDownloading(true);
-        try {
-            const canvas = await html2canvas(dashboardRef.current, {
-                scale: 2,
-                backgroundColor: '#020817', // Match background color
-                logging: false,
-            });
 
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save('campus-carbon-report.pdf');
-        } catch (error) {
-            console.error("Download failed", error);
-        } finally {
-            setDownloading(false);
-        }
-    };
 
     return (
         <div className="space-y-6" ref={dashboardRef}>
             <div className="flex items-center justify-between">
                 <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
                 <div className="flex items-center space-x-2">
-                    <button
-                        onClick={handleDownload}
-                        disabled={downloading}
-                        className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors flex items-center gap-2 disabled:opacity-50"
-                    >
-                        {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                        {downloading ? 'Generating...' : 'Download Report'}
-                    </button>
+
                 </div>
             </div>
 
